@@ -33,6 +33,8 @@ contract Ed25519COMPARISON is Test {
     }
 
     function test_fuzzEd25519(bytes32 key, bytes memory preimage) public {
+        // In the Rust code we don't do right truncation, so just assume:
+        vm.assume(preimage.length % 32 == 0);
         (
             bytes32 digestA,
             bytes32 digestB,
@@ -42,5 +44,19 @@ contract Ed25519COMPARISON is Test {
         ) = c.createEd25519(key, preimage);
         vm.resetGasMetering();
         c.testEd25519(digestA, digestB, pubKey, sigA, sigB);
+    }
+
+    function test_fuzzEd25519Broken(
+        bytes32 digestA,
+        bytes32 digestB,
+        bytes32 key,
+        bytes32 sigA,
+        bytes32 sigB
+    ) public {
+        try
+            c.testEd25519(digestA, digestB, key, sigA, sigB)
+        {
+            revert("should've panicked");
+        } catch {}
     }
 }
