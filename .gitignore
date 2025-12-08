@@ -1,0 +1,5 @@
+ed25519-comparison.wasm
+*.wat
+*.wasm1
+target
+out
