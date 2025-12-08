@@ -6,7 +6,7 @@ import {Test} from "forge-std/Test.sol";
 import {IArbFoundry} from "./IArbFoundry.sol";
 
 interface IEd25519Comparison {
-    function createEd25519(bytes32 key) external pure returns (
+    function createEd25519(bytes32 key, bytes memory preimage) external pure returns (
         bytes32 digestA,
         bytes32 digestB,
         bytes32 pubKey,
@@ -32,14 +32,15 @@ contract Ed25519COMPARISON is Test {
         ));
     }
 
-    function test_fuzzEd25519(bytes32 key) public view {
+    function test_fuzzEd25519(bytes32 key, bytes memory preimage) public {
         (
             bytes32 digestA,
             bytes32 digestB,
             bytes32 pubKey,
             bytes32 sigA,
             bytes32 sigB
-        ) = c.createEd25519(key);
+        ) = c.createEd25519(key, preimage);
+        vm.resetGasMetering();
         c.testEd25519(digestA, digestB, pubKey, sigA, sigB);
     }
 }

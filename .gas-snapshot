@@ -1,0 +1,1 @@
+Ed25519COMPARISON:test_fuzzEd25519(bytes32,bytes) (runs: 257, μ: 92649, ~: 92630)

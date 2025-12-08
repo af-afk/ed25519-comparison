@@ -15,7 +15,7 @@ use array_concat::concat_arrays;
 static ALLOC: mini_alloc::MiniAlloc = mini_alloc::MiniAlloc::INIT;
 
 const SEL_CREATE_ED25519: [u8; 4] = const_keccak_sel(b"createEd25519(bytes32,bytes)");
-const SEL_TEST_ED25519: [u8; 4] = const_keccak_sel(b"testEd25519(bytes32,bytes32,bytes32,bytes32)");
+const SEL_TEST_ED25519: [u8; 4] = const_keccak_sel(b"testEd25519(bytes32,bytes32,bytes32,bytes32,bytes32)");
 
 #[derive(Debug, Clone, Copy)]
 struct FuckYouRust([u8; 64]);
@@ -135,7 +135,7 @@ pub unsafe extern "C" fn user_entrypoint(args_len: usize) -> usize {
             key.verify_prehashed_strict(digest, None, &sig).unwrap();
             0
         }
-        _ => 1,
+        _ => panic!("bad invocation")
     }
 }
 
