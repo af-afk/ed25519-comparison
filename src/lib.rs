@@ -127,14 +127,6 @@ pub unsafe extern "C" fn user_entrypoint(args_len: usize) -> usize {
             write_result_slice(&x);
             0
         }
-        SEL_TEST_ED25519 => {
-            let digest = FuckYouRust(args[4..4 + 32 * 2].try_into().unwrap());
-            let key: [u8; 32] = args[4 + 32 * 2..4 + 32 * 3].try_into().unwrap();
-            let key = VerifyingKey::from_bytes(&key).unwrap();
-            let sig = Signature::from_bytes(&args[4 + 32 * 3..4 + 32 * 5].try_into().unwrap());
-            key.verify_prehashed_strict(digest, None, &sig).unwrap();
-            0
-        }
         _ => panic!("bad invocation")
     }
 }

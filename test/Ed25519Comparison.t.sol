@@ -13,20 +13,13 @@ interface IEd25519Comparison {
         bytes32 sigA,
         bytes32 sigB
     );
-
-    function testEd25519(
-        bytes32 digestA,
-        bytes32 digestB,
-        bytes32 pubKey,
-        bytes32 sigA,
-        bytes32 sigB
-    ) external pure;
 }
 
 contract Ed25519COMPARISON is Test {
     IEd25519Comparison c;
 
     function setUp() external {
+        vm.createSelectFork("https://rpc.superposition.so");
         c = IEd25519Comparison(IArbFoundry(address(vm)).deployStylusCode(
             "ed25519-comparison.wasm"
         ));
@@ -43,20 +36,14 @@ contract Ed25519COMPARISON is Test {
             bytes32 sigB
         ) = c.createEd25519(key, preimage);
         vm.resetGasMetering();
-        c.testEd25519(digestA, digestB, pubKey, sigA, sigB);
-    }
-
-    function test_fuzzEd25519Broken(
-        bytes32 digestA,
-        bytes32 digestB,
-        bytes32 key,
-        bytes32 sigA,
-        bytes32 sigB
-    ) public {
-        try
-            c.testEd25519(digestA, digestB, key, sigA, sigB)
-        {
-            revert("should've panicked");
-        } catch {}
+        (bool rc,) = 0xC3E443bE2Cfa4F41a5F5E4978D012847d355b419.call(abi.encode(
+            digestA,
+            digestB,
+            pubKey,
+            sigA,
+            sigB
+        ));
+        assert(rc);
     }
 }
+
