@@ -1,1 +1,1 @@
-Ed25519COMPARISON:test_fuzzEd25519(bytes32,bytes) (runs: 257, μ: 92715, ~: 92703)
+Ed25519COMPARISON:test_fuzzEd25519(bytes32,bytes) (runs: 10001, μ: 92747, ~: 92736)

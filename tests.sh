@@ -6,4 +6,6 @@
 
 make
 
-arbos-forge test -vvvv $@
+export FOUNDRY_FUZZ_RUNS=10000
+
+arbos-forge snapshot
